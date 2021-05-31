@@ -1,0 +1,30 @@
+---
+title: "visualizations"
+author: "gstammer"
+date: "5/31/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(socviz)
+library(tidyverse)
+```
+
+```{r set-up-data}
+mydata <- read_csv("data/mysemesterdata.csv")
+
+mydata <- mydata %>%
+  rename("date" = "Date",
+         "period" = "Period",
+         "events" = "Notable Events",
+         "rating" = "Rating/10",
+         "cry" = "Cry count",
+         "cry_reasons" = "Cry Reasons")
+```
+
+
+
+
+
+
