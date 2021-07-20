@@ -20,9 +20,34 @@ mydata <- mydata %>%
          "events" = "Notable Events",
          "rating" = "Rating/10",
          "cry" = "Cry count",
-         "cry_reasons" = "Cry Reasons")
+         "cry_reasons" = "Cry Reasons") %>%
+  mutate(date = as.Date(date, format = "%m-%d-%Y")) %>%
+  mutate(day = factor(strftime(date, format = "%a"),
+                      levels = rev(c("Sun", "Mon", "Tue", "Wed", "Thu",
+                                     "Fri", "Sat"))),
+         week = factor(strftime(date, format = "%U")),
+         month = factor(strftime(date, format = "%b"),
+                        levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")),
+         ddate = factor(strftime(date, format = "%d"))) %>%
+  filter(!is.na(rating))
 ```
 
+```{r test-graphs}
+#bar chart
+mydata %>%
+  select(date, rating, cry) %>%
+  mutate(cryatall = if_else(cry > 0, "yes", "no")) %>%
+  ggplot(aes(x = date, y = rating, fill = cryatall)) +
+  geom_col(width = 1)
+
+#grid calendar
+mydata %>%
+  ggplot(aes(x = week, y = day, fill = factor(rating))) +
+  geom_raster() +
+  facet_grid(~month, scales = "free", space = "free") +
+  scale_fill_brewer(palette = "RdYlGn")
+```
 
 
 
